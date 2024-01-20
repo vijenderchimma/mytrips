@@ -32,7 +32,7 @@ const Temples = () => {
             <h1>Temples</h1>
             <ul className="list-container">
                 {templeData.map(eachData=>(
-                    <TripsData eachData = {eachData} key = {eachData.id} />
+                    <TripsData eachData = {eachData} key = {eachData._id} />
                 ))}
             </ul>
         </div>

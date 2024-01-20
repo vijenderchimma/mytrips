@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import Header from "../Header";
 import axios from 'axios'
 
 import './index.css'
+import { useNavigate } from "react-router-dom";
 
 const Register = () =>{
 
@@ -12,6 +12,7 @@ const Register = () =>{
     const [email,setEmail] = useState()
     const [number,setNumber] = useState()
     const [gender,setGender] = useState()
+    const navigate = useNavigate()
 
     const onChangeUserName = event => {
         setUserName(event.target.value)
@@ -33,6 +34,10 @@ const Register = () =>{
         setPassword(event.target.value)
     }
 
+    const navigateToLogin = () => {
+        navigate("/login",{ replace: true })
+    }
+
     const onSubmitForm = async event =>{
         event.preventDefault()
 
@@ -41,6 +46,9 @@ const Register = () =>{
         try{
             const response = await axios.post('http://localhost:3001/register',userDetails)
             console.log(response.data)
+            if (response && response.status === 200) {
+                navigateToLogin();
+              } 
         }
         catch(err){
             console.log(err)
@@ -50,7 +58,6 @@ const Register = () =>{
     return (
 
         <>
-        <Header/>
         <div className="register-container">
             <h1 className="registration">Registration</h1>
                 <form className="form-container" onSubmit={onSubmitForm}>

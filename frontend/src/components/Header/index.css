@@ -22,3 +22,14 @@
     margin-right: 20px;
     color: #ffffff;
 }
+
+
+.logout-button{
+    background-color: #0000ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}

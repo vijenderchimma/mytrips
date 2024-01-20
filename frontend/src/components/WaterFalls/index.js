@@ -30,7 +30,7 @@ const Waterfalls = () => {
             <h1>Waterfalls</h1>
             <ul className="list-container">
                 {WaterfallsData.map(eachData=>(
-                    <TripsData eachData = {eachData} key = {eachData.id} />
+                    <TripsData eachData = {eachData} key = {eachData._id} />
                 ))}
             </ul>
         </div>

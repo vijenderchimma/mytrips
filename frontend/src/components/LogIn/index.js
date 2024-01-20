@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import Header from '../Header';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 
 
 import './index.css';
+import { useNavigate } from 'react-router-dom';
 
 const LogIn = (props) => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginState,setLoginState] = useState();
 
 
   const onChangeEmail = (event) => {
@@ -23,11 +23,22 @@ const LogIn = (props) => {
     setPassword(event.target.value);
   };
 
-  const onSubmitSuccess = (jwtToken) =>{
-    const {history} = props
-    Cookies.set("jwt_token",jwtToken,{expiry:1,path: "/"})
-    history.push("/")
+  const navigateToHome = () =>{
+    const jwtToken = Cookies.get("jwt_token")
+    if(jwtToken !== undefined){
+      navigate("/",{ replace: true })
+    } 
   }
+
+  const onSubmitSuccess = (jwtToken) => {
+    console.log('JWT Token:', jwtToken);
+  
+    // Explicitly convert jwtToken to string
+    const tokenAsString = String(jwtToken);
+  
+    Cookies.set("jwt_token", tokenAsString, { expires: 1, path: "/" });
+  };
+  
 
   const onSubmitForm = async (event) => {
     event.preventDefault();
@@ -39,31 +50,30 @@ const LogIn = (props) => {
   
     try {
       const response = await axios.post('http://localhost:3001/login', userDetails, { headers });
-      console.log('User details posted successfully:', response.data);
-      if (response.status === 200) { // Assuming 200 is the success status
+  
+      if (response && response.status === 200) {
         console.log('User details posted successfully:', response.data);
         const jwtToken = response.data.token;
         onSubmitSuccess(jwtToken);
+        setLoginState(response.data.message)
+        console.log(response.message)
+        navigateToHome();
+      } else {
+        console.error('Unexpected response:', response);
       }
     } catch (error) {
       console.error('Error posting user details:', error);
-      console.log('Response status:', error.response.status);
-      console.log('Response data:', error.response.data);
+      console.log('Response status:', error.response ? error.response.status : 'N/A');
+      console.log('Response data:', error.response ? error.response.data : 'N/A');
       console.log('Axios configuration:', error.config);
     }
   };
-
-  const onTestNavigation = () => {
-     const jwtToken = Cookies.get("jwt_token")
-     if (jwtToken !== undefined){
-        return navigate("/") 
-     }
-  }
+  
+  console.log()
   
 
   return (
     <>
-      <Header />
       <div className="login-container">
         <h1 className="login-heading">User Login</h1>
         <form className="form-container" onSubmit={onSubmitForm}>
@@ -90,8 +100,8 @@ const LogIn = (props) => {
             placeholder="Enter Password"
           />
           <input type="submit" className="login-button" value="LogIn" />
+          {loginState? <p className='login-state'>{loginState}</p> : ""}
         </form>
-        <button onClick={onTestNavigation}>Test Navigation</button>
       </div>
     </>
   );
