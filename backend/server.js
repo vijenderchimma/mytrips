@@ -17,7 +17,8 @@ const schema = new mongoose.Schema({
     name: String,
     url: String,
     img:String,
-    description: String
+    description: String,
+    territory: String
 })
 
 const templeModel = mongoose.model('temples',schema)
@@ -38,6 +39,22 @@ app.get('/waterfalls',async (req,res)=>{
     try{
         const data = await waterfallsModel.find()
         res.json(data)
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: 'server err'})
+    }
+})
+
+const trekkingModel = mongoose.model('trekking',schema)
+
+app.get('/trekking', async (req,res)=>{
+
+    try{
+
+        const data = await trekkingModel.find()
+        res.json(data)
+
     }
     catch(err){
         console.log(err)
@@ -107,7 +124,7 @@ app.post("/login", async (req,res)=>{
                     id : existingUser._id
                 }
                 const token = jwtToken.sign(payload,"jwt_token")
-                res.status(201).send({token, message: "Login Success"})
+                res.status(200).send({token, message: "Login Success"})
             }
             else{
                 res.status(400).send("Invalid Password")
