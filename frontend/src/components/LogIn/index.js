@@ -66,6 +66,8 @@ const LogIn = (props) => {
       console.log('Response status:', error.response ? error.response.status : 'N/A');
       console.log('Response data:', error.response ? error.response.data : 'N/A');
       console.log('Axios configuration:', error.config);
+      navigate('/register',{replace: true})
+      
     }
   };
   

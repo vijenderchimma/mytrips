@@ -1,10 +1,23 @@
 // Home.js
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../Header';  // Adjust the path accordingly
+import Cookies from 'js-cookie';
 
 import './index.css';
 
-const Home = () => (
+const Home = () =>{
+  const navigate = useNavigate()
+  
+  useEffect(()=>{
+    const jwtToken = Cookies.get('jwt_token')
+  if (jwtToken === undefined) {
+    navigate('/login')
+  }
+  })
+  
+  
+  return(
   <>
     <Header />
     <div className='home-container'>
@@ -14,5 +27,5 @@ const Home = () => (
     </div>
   </>
 );
-
+  }
 export default Home;

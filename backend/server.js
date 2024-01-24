@@ -22,6 +22,68 @@ const schema = new mongoose.Schema({
 })
 
 const templeModel = mongoose.model('temples',schema)
+const waterfallsModel = mongoose.model('waterfalls',schema)
+const trekkingModel = mongoose.model('trekking',schema)
+
+app.post('/temples',async (req,res)=>{
+    const {name,state,district,url,img,description} = req.body
+    try{
+        const existingName = await templeModel.findOne({name})
+        if(!existingName){
+            const newTrip = new templeModel({
+                name,state,district,url,img,description
+            })
+            await newTrip.save()
+            res.status(201).send("trip posted Successfully")
+        }
+        else{
+            res.status(400).send('Place Already Exists');
+        }
+    }
+    catch(err){
+        res.status(500).send("Internal Server Error");
+    }
+})
+
+app.post('/waterfalls',async (req,res)=>{
+    const {name,state,district,url,img,description} = req.body
+    try{
+        const existingName = await waterfallsModel.findOne({name})
+        if(!existingName){
+            const newTrip = new waterfallsModel({
+                name,state,district,url,img,description
+            })
+            await newTrip.save()
+            res.status(201).send("trip posted Successfully")
+        }
+        else{
+            res.status(400).send('Place Already Exists');
+        }
+    }
+    catch(err){
+        res.status(500).send("Internal Server Error");
+    }
+})
+
+app.post('/trekking',async (req,res)=>{
+    const {name,state,district,url,img,description} = req.body
+    try{
+        const existingName = await trekkingModel.findOne({name})
+        if(!existingName){
+            const newTrip = new trekkingModel({
+                name,state,district,url,img,description
+            })
+            await newTrip.save()
+            res.status(201).send("trip posted Successfully")
+        }
+        else{
+            res.status(400).send('Place Already Exists');
+        }
+    }
+    catch(err){
+        res.status(500).send("Internal Server Error");
+    }
+})
 
 app.get('/gettemples', async (req,res)=>{
     try{
@@ -33,7 +95,7 @@ app.get('/gettemples', async (req,res)=>{
     }
 })
 
-const waterfallsModel = mongoose.model('waterfalls',schema)
+
 
 app.get('/waterfalls',async (req,res)=>{
     try{
@@ -46,7 +108,7 @@ app.get('/waterfalls',async (req,res)=>{
     }
 })
 
-const trekkingModel = mongoose.model('trekking',schema)
+
 
 app.get('/trekking', async (req,res)=>{
 
@@ -136,6 +198,9 @@ app.post("/login", async (req,res)=>{
     res.status(500).send('Internal server error');
     }
 })
+
+
+app.post('/waterfalls')
 
 app.listen(3001, () => {
     console.log('server is running\n http://localhost:3001')

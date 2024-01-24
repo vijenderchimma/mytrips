@@ -12,6 +12,7 @@ const Register = () =>{
     const [email,setEmail] = useState()
     const [number,setNumber] = useState()
     const [gender,setGender] = useState()
+    const [registerStatus,setRegisterStatus] = useState()
     const navigate = useNavigate()
 
     const onChangeUserName = event => {
@@ -46,6 +47,7 @@ const Register = () =>{
         try{
             const response = await axios.post('http://localhost:3001/register',userDetails)
             console.log(response.data)
+            setRegisterStatus(response.data)
             if (response && response.status === 200) {
                 navigateToLogin();
               } 
@@ -53,6 +55,12 @@ const Register = () =>{
         catch(err){
             console.log(err)
         }
+
+        setGender('')
+        setEmail('')
+        setNumber('')
+        setPassword('')
+        setUserName('')
     }
 
     return (
@@ -74,6 +82,7 @@ const Register = () =>{
                 <input type = "radio" id = "female" checked={gender === 'female'} className="gender" value = "female" onChange = {onChangeGender} />
                 <label htmlFor = "female" className="radio-label">Female</label>
                 <input type = "submit" className="register-button" value = "Register" />
+                <p className="register-status">{registerStatus}</p>
                 </form>
         </div>
         </>

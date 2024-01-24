@@ -12,9 +12,11 @@
 .label{
     display: block;
     margin-bottom: 5px;
+    margin-top: 10px;
 }
 
 .user-input{
+    width: 100%;
     padding: 10px;
     outline: none;
     border: 1px solid #808080;
@@ -31,4 +33,5 @@
     padding: 10px 20px;
     margin: 10px;
     cursor: pointer;
+    
 }
